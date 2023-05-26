@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Oferty pracy</title>
+</head>
+<body>
+  <header>
+    <h1>Oferty pracy</h1>
+  </header>
+
+  <main>
+    {% for job in jobs %}
+      {{ job }}
+    {% endfor %}
+  </main>
+
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Rekruter.pl</title>
+  <style>
+    /* Stylizacja nawigacji */
+    .navbar {
+      background-color: #333333;
+      padding: 10px;
+    }
+
+    .navbar ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .navbar li {
+      display: inline;
+      margin-right: 10px;
+    }
+
+    .navbar li a {
+      color: #ffffff;
+      text-decoration: none;
+      padding: 5px;
+    }
+
+    .navbar li a:hover {
+      background-color: #ffffff;
+      color: #333333;
+    }
+
+    /* Stylizacja reszty szablonu niebiesko-białego */
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      background-color: #0099cc;
+      padding: 20px;
+      color: #ffffff;
+    }
+
+    h1 {
+      margin: 0;
+      text-align: center;
+    }
+
+    main {
+      padding: 20px;
+    }
+
+    footer {
+      background-color: #333333;
+      padding: 20px;
+      color: #ffffff;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <nav>
+      <ul>
+        <li><a href="{% url 'RekruterApp:index' %}">Strona główna</a></li>
+        <li><a href="{% url 'RekruterApp:login' %}">Logowanie</a></li>
+        <li><a href="{% url 'RekruterApp:oferty-pracy' %}">Ofert pracy</a></li>
+        <li><a href="{% url 'RekruterApp:dodaj' %}">Dodaj ofertę</a></li>
+        <li><a href="#">Kontakt</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <h1>Rekruter.pl</h1>
+
+    {% block content %}
+
+    {% endblock content %}
+  </main>
+
+  <footer>
+    &copy; 2023 Rekruter.pl Wszelkie prawa zastrzeżone.
+  </footer>
+
+</body>
+</html>

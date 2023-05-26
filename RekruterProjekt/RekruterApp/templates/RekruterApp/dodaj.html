@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Dodaj ofertę pracy</title>
+</head>
+<body>
+  <h2>Dodaj ofertę pracy</h2>
+  <form method="POST">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    <button type="submit">Dodaj ofertę</button>
+  </form>
+</body>
+</html>
+
+{% endblock content %}

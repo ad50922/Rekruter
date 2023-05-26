@@ -1,0 +1,87 @@
+
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Strona logowania</title>
+  <style>
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 400px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #0099cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0077aa;
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <h2>Logowanie</h2>
+    <form method="POST">
+    {% csrf_token %}
+      <label for="username">Nazwa użytkownika:</label>
+      <input type="text" id="username" name="username">
+
+      <label for="password">Hasło:</label>
+      <input type="password" id="password" name="password">
+
+      <button type="submit" name="zaloguj">Zaloguj</button>
+    </form>
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+
+    <div style="width: 100%; margin-bottom: 30px; color: red">
+        <a class="close" href="{% url 'RekruterApp:login' %}" data-dismiss="alert">×</a>
+            {{ message }}
+    </div>
+    {% endif%}
+    {% endfor %}
+
+  </main>
+</body>
+</html>
+
+{% endblock content %}
