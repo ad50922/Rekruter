@@ -1,9 +1,21 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
 from django.contrib import messages
-from .forms import OfertaPracyForm
+from .forms import OfertaPracyForm, UzytkownikForm
 
 def index(request):
     return render(request, "RekruterApp/index.html")
+
+def rejestracja(request):
+    form = UzytkownikForm()
+    if request.method == 'POST':
+        if 'zarejestruj' in request.POST:
+            form = UzytkownikForm(request.POST)
+            form.save()
+            return login(request)
+        else:
+            messages.error(request, 'Dany email jest już w bazie danych, wprowadź inny.')
+    return render(request, "RekruterApp/rejestracja.html", {"form": form})
+
 
 def login(request):
     if request.method == 'POST':
@@ -38,18 +50,20 @@ def oferty(request):
 
 def dodaj_oferte(request):
     if request.method == 'POST':
-        form = OfertaPracyForm(request.POST)
-        if form.is_valid():
-            # Utwórz nowy obiekt OfertaPracy na podstawie danych z formularza
-            form.save()
-            messages.success(request, 'Oferta pracy została dodana.')
-            return oferty(request)  # Przekierowanie na stronę z listą ofert
+        if 'dodaj' in request.POST:
+            form = OfertaPracyForm(request.POST)
+            if form.is_valid():
+                form.save()
+                messages.success(request, 'Oferta pracy została dodana.')
+                return oferty(request)  # Przekierowanie na stronę z listą ofert (ustaw odpowiednią nazwę widoku)
+            else:
+                messages.error(request, 'Wystąpił błąd. Proszę wypełnić poprawnie formularz.')
         else:
-            messages.error(request, 'Wystąpił błąd. Proszę wypełnić poprawnie formularz.')
+            form = OfertaPracyForm()
     else:
         form = OfertaPracyForm()
 
-    context = {'form': form}
-    return render(request, 'RekruterApp/dodaj.html', context)
+    return render(request, 'RekruterApp/dodaj.html', {"form": form})
+
 
 # Create your views here.

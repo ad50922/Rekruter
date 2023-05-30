@@ -1,0 +1,35 @@
+
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Strona logowania</title>
+</head>
+<body>
+  <main>
+    <h2>Rejestracja</h2>
+    <form method="POST">
+    {% csrf_token %}
+        {{ form.as_p }}
+      <select id="wybor" name="pracodawca" style="margin-bottom: 20px; max-width: 300px;">
+        <option value="pracodawca">Pracodawca</option>
+        <option value="pracownik">Pracownik</option>
+      </select>
+      <button type="submit" name="zarejestruj">Zarejestruj</button>
+    </form>
+    {% for message in messages %}
+    {% if message.tags == 'error' %}
+
+    <div style="width: 100%; margin-bottom: 30px; color: red">
+        <a class="close" href="{% url 'RekruterApp:rejestracja' %}" data-dismiss="alert">×</a>
+            {{ message }}
+    </div>
+    {% endif%}
+    {% endfor %}
+
+  </main>
+</body>
+</html>
+
+{% endblock content %}

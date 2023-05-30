@@ -62,13 +62,6 @@
     <h2>Logowanie</h2>
     <form method="POST">
     {% csrf_token %}
-      <label for="username">Nazwa użytkownika:</label>
-      <input type="text" id="username" name="username">
-
-      <label for="password">Hasło:</label>
-      <input type="password" id="password" name="password">
-
-      <button type="submit" name="zaloguj">Zaloguj</button>
     </form>
     {% for message in messages %}
     {% if message.tags == 'error' %}

@@ -4,7 +4,7 @@ from . import views
 app_name = 'RekruterApp'
 urlpatterns = [
     path("", views.index, name="index"),
-    path("login", views.login, name="login"),
+    path("rejestracja", views.rejestracja, name="rejestracja"),
     path("oferty-pracy", views.oferty, name="oferty-pracy"),
     path("dodaj", views.dodaj_oferte, name="dodaj"),
 ]

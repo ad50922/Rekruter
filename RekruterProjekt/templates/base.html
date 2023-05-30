@@ -60,6 +60,56 @@
       color: #ffffff;
       text-align: center;
     }
+
+    body {
+      background-color: #f0f0f0;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      padding: 20px;
+      max-width: 800px;
+      margin: 0 auto;
+      background-color: #ffffff;
+      border-radius: 5px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    label {
+      margin-bottom: 5px;
+    }
+
+    input {
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 3px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #0099cc;
+      color: #ffffff;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #0077aa;
+    }
   </style>
 </head>
 <body>
@@ -67,7 +117,7 @@
     <nav>
       <ul>
         <li><a href="{% url 'RekruterApp:index' %}">Strona główna</a></li>
-        <li><a href="{% url 'RekruterApp:login' %}">Logowanie</a></li>
+        <li><a href="{% url 'RekruterApp:rejestracja' %}">Rejestracja</a></li>
         <li><a href="{% url 'RekruterApp:oferty-pracy' %}">Ofert pracy</a></li>
         <li><a href="{% url 'RekruterApp:dodaj' %}">Dodaj ofertę</a></li>
         <li><a href="#">Kontakt</a></li>
