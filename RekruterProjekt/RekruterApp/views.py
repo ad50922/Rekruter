@@ -1,6 +1,6 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
-from .forms import OfertaPracyForm, UzytkownikForm
+from .forms import OfertaPracyForm, UzytkownikForm, PracodawcaForm, PracownikForm
 
 def index(request):
     return render(request, "RekruterApp/index.html")
@@ -8,14 +8,35 @@ def index(request):
 def rejestracja(request):
     form = UzytkownikForm()
     if request.method == 'POST':
+
         if 'zarejestruj' in request.POST:
             form = UzytkownikForm(request.POST)
-            form.save()
-            return login(request)
-        else:
-            messages.error(request, 'Dany email jest już w bazie danych, wprowadź inny.')
+            #form.save()
+            wybor = request.POST.get('wybor')
+            if wybor == "pracodawca":
+                return pracodawca(request)
+            else:
+                return pracownik(request)
+            #return login(request)
+        # else:
+        #     messages.error(request, 'Dany email jest już w bazie danych, wprowadź inny.')
     return render(request, "RekruterApp/rejestracja.html", {"form": form})
 
+
+def pracodawca(request):
+    form = PracodawcaForm()
+
+    return render(request, "RekruterApp/pracodawca.html", {"pracodawca": form})
+
+
+def pracownik(request):
+    form = PracownikForm()
+    print(request.POST)
+    if request.method == 'POST':
+        if 'uzupelnij' in request.POST:
+            # form.save()
+            return oferty(request)
+    return render(request, "RekruterApp/pracownik.html", {"pracownik": form})
 
 def login(request):
     if request.method == 'POST':

@@ -12,7 +12,7 @@
     <form method="POST">
     {% csrf_token %}
         {{ form.as_p }}
-      <select id="wybor" name="pracodawca" style="margin-bottom: 20px; max-width: 300px;">
+      <select id="wybor" name="wybor" style="margin-bottom: 20px; max-width: 300px;">
         <option value="pracodawca">Pracodawca</option>
         <option value="pracownik">Pracownik</option>
       </select>
@@ -27,7 +27,6 @@
     </div>
     {% endif%}
     {% endfor %}
-
   </main>
 </body>
 </html>

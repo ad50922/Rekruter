@@ -8,3 +8,4 @@ urlpatterns = [
     path("oferty-pracy", views.oferty, name="oferty-pracy"),
     path("dodaj", views.dodaj_oferte, name="dodaj"),
 ]
+

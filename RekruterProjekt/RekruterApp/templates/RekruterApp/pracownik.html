@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+ <form method="POST">
+    {% csrf_token %}
+        {{ pracodawca.as_p }}
+     <button type="submit" name="profil">Uzupełnij profil</button>
+ </form>
+</body>
+</html>
+{% endblock content %}
