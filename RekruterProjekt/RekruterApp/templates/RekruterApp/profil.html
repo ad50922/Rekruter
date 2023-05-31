@@ -20,45 +20,56 @@
                 document.getElementById("pracownik-form").style.display = "none";
             }
         }
+
+    function showProfileSection(event) {
+        event.preventDefault(); // Powstrzymaj domyślne zachowanie przycisku
+
+        var registrationForm = document.getElementById("registration-form");
+        var profileSection = document.getElementById("profile-section");
+        registrationForm.style.display = "none";
+        profileSection.style.display = "block";
+    }
+
     </script>
 </head>
 <body>
     <h2>Rejestracja</h2>
-        <form method="POST">
+    <form id="registration-form" method="POST">
         {% csrf_token %}
-            {{ form.as_p }}
-          <button type="submit" name="zarejestruj">Zarejestruj</button>
-        </form>
-        {% for message in messages %}
-        {% if message.tags == 'error' %}
+        {{ form.as_p }}
+        <button type="submit" name="zarejestruj" onclick="showProfileSection(event)">Zarejestruj</button>
+    </form>
 
+    {% for message in messages %}
+        {% if message.tags == 'error' %}
         <div style="width: 100%; margin-bottom: 30px; color: red">
             <a class="close" href="{% url 'RekruterApp:rejestracja' %}" data-dismiss="alert">×</a>
-                {{ message }}
+            {{ message }}
         </div>
         {% endif%}
-        {% endfor %}
-    <h2 style="margin-top: 30px;">Uzupełnij profil</h2>
-    <form method="post">
-        {% csrf_token %}
-        <select id="wybor" name="wybor" onchange="showForm(this)" style="max-width: 400px">
-            <option value="">Wybierz</option>
-            <option value="pracodawca" name="pracodawca">Pracodawca</option>
-            <option value="pracownik" name="pracownik">Pracownik</option>
-        </select>
+    {% endfor %}
 
-        <div id="pracodawca-form" style="display: none;">
-            {{ pracodawca.as_p}}
-            <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
-        </div>
+    <div id="profile-section" style="display: none;">
+        <h2 style="margin-top: 30px;">Uzupełnij profil</h2>
+        <form method="post">
+            {% csrf_token %}
+            <select id="wybor" name="wybor" onchange="showForm(this)" style="max-width: 400px">
+                <option value="">Wybierz</option>
+                <option value="pracodawca" name="pracodawca">Pracodawca</option>
+                <option value="pracownik" name="pracownik">Pracownik</option>
+            </select>
 
-        <div id="pracownik-form" style="display: none;">
-            {{ pracownik.as_p }}
-            <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
-        </div>
+            <div id="pracodawca-form" style="display: none;">
+                {{ pracodawca.as_p}}
+                <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
+            </div>
 
-
-    </form>
+            <div id="pracownik-form" style="display: none;">
+                {{ pracownik.as_p }}
+                <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
+            </div>
+        </form>
+    </div>
 </body>
 </html>
 {% endblock content %}

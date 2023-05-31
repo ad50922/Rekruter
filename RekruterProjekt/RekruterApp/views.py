@@ -38,7 +38,7 @@ def rejestracja(request):
             if wybor == "pracodawca":
                 pracodawca_form = PracodawcaForm(request.POST)
                 if pracodawca_form.is_valid():
-                    pracodawca_form.save()
+                    #pracodawca_form.save()
                     return oferty(request)
             elif wybor == "pracownik":
                 pracownik_form = PracownikForm(request.POST)
@@ -48,21 +48,6 @@ def rejestracja(request):
 
     return render(request, "RekruterApp/profil.html", context)
 
-def login(request):
-    if request.method == 'POST':
-        if 'zaloguj' in request.POST:
-            username = request.POST.get('username')
-            password = request.POST.get('password')
-
-            # Sprawdzenie poprawności danych logowania
-            # kwerenda na sprawdzenie poprawnosci logowania
-            if username == 'admin' and password == 'admin123':
-                return oferty(request)
-            else:
-                # Nieprawidłowe dane logowania
-                messages.error(request, 'Nieprawidłowa nazwa użytkownika lub hasło.')
-
-    return render(request, 'RekruterApp/logowanie.html')
 
 def oferty(request):
     #kwerenda na wyswietlenie pierwszy 10 ofert

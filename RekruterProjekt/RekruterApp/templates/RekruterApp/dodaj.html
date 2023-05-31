@@ -4,6 +4,32 @@
 <html>
 <head>
   <title>Dodaj ofertę pracy</title>
+  <script>
+    function showQuestionFields() {
+      var checkbox = document.getElementById("testy-checkbox");
+      var questionFields = document.getElementById("question-fields");
+
+      if (checkbox.checked) {
+        questionFields.style.display = "block";
+      } else {
+        questionFields.style.display = "none";
+      }
+    }
+
+    function addQuestionField() {
+      var questionContainer = document.getElementById("question-container");
+      var newQuestionField = document.createElement("div");
+
+      newQuestionField.innerHTML = `
+        <label>Pytanie:</label>
+        <input type="text" name="question[]">
+        <label>Odpowiedź:</label>
+        <input type="text" name="answer[]">
+      `;
+
+      questionContainer.appendChild(newQuestionField);
+    }
+  </script>
 </head>
 <body>
   <h2>Dodaj ofertę pracy</h2>
@@ -11,9 +37,25 @@
     {% csrf_token %}
     {{ form.as_p }}
 
+    <label>
+      <input type="checkbox" id="testy-checkbox" onchange="showQuestionFields()">
+      Testy
+    </label>
+
+    <div id="question-fields" style="display: none;">
+      <div id="question-container">
+        <div>
+          <label>Pytanie:</label>
+          <input type="text" name="question[]">
+          <label>Odpowiedź:</label>
+          <input type="text" name="answer[]">
+        </div>
+      </div>
+      <button type="button" onclick="addQuestionField()" style="margin-bottom: 20px;">Dodaj pytanie i odpowiedź</button>
+    </div>
+
     <button type="submit" name="dodaj">Dodaj ofertę</button>
   </form>
 </body>
 </html>
-
 {% endblock content %}

@@ -5,9 +5,10 @@
 #   * Make sure each ForeignKey and OneToOneField has `on_delete` set to the desired behavior
 #   * Remove `managed = False` lines if you wish to allow Django to create, modify, and delete the table
 # Feel free to rename the models, but don't rename db_table values or field names.
-import random
 
+from django.utils import timezone
 from django.db import models
+
 
 
 class Administrator(models.Model):
@@ -77,11 +78,11 @@ class Odpowiedznapytaniezamkniete(models.Model):
 
 class Ofertapracy(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    pracodawcauzytkownikid = models.ForeignKey('Pracodawca', models.DO_NOTHING, db_column='PracodawcaUzytkownikID')  # Field name made lowercase.
+    pracodawcauzytkownikid = models.ForeignKey('Pracodawca', models.DO_NOTHING, db_column='PracodawcaUzytkownikID', default=3)  # Field name made lowercase.
     testid = models.ForeignKey('Test', models.DO_NOTHING, db_column='TestID', blank=True, null=True)  # Field name made lowercase.
     tytuloferty = models.CharField(db_column='TytulOferty', max_length=255, blank=True, null=True)  # Field name made lowercase.
     opisoferty = models.CharField(db_column='OpisOferty', max_length=2047, blank=True, null=True)  # Field name made lowercase.
-    datadodaniaoferty = models.DateField(db_column='DataDodaniaOferty', blank=False, null=True)  # Field name made lowercase.
+    datadodaniaoferty = models.DateField(db_column='DataDodaniaOferty', blank=False, null=True, auto_now=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -89,7 +90,7 @@ class Ofertapracy(models.Model):
 
 
 class Pracodawca(models.Model):
-    uzytkownikid = models.OneToOneField('Uzytkownik', models.DO_NOTHING, db_column='UzytkownikID', primary_key=True)  # Field name made lowercase.
+    uzytkownikid = models.OneToOneField('Uzytkownik', models.DO_NOTHING, db_column='UzytkownikID', primary_key=True, default=3)  # Field name made lowercase.
     nazwafirmy = models.CharField(db_column='NazwaFirmy', max_length=255, blank=True, null=True)  # Field name made lowercase.
     glownasiedziba = models.CharField(db_column='GlownaSiedziba', max_length=255, blank=True, null=True)  # Field name made lowercase.
     numerkontaktowy = models.IntegerField(db_column='NumerKontaktowy')  # Field name made lowercase.
@@ -101,7 +102,7 @@ class Pracodawca(models.Model):
 
 
 class Pracownik(models.Model):
-    uzytkownikid = models.OneToOneField('Uzytkownik', models.DO_NOTHING, db_column='UzytkownikID', primary_key=True, default=random.randint(1, 6))  # Field name made lowercase.
+    uzytkownikid = models.OneToOneField('Uzytkownik', models.DO_NOTHING, db_column='UzytkownikID', primary_key=True, default=4)  # Field name made lowercase.
     listmotywacyjny = models.TextField(blank=True, null=True)
     cv = models.TextField(blank=True, null=True)
 
