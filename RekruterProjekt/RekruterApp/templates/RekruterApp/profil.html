@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script>
+        function showForm(select) {
+            var selectedOption = select.value;
+
+            if (selectedOption === "pracodawca") {
+                document.getElementById("pracownik-form").style.display = "none";
+                document.getElementById("pracodawca-form").style.display = "block";
+            } else if (selectedOption === "pracownik") {
+                document.getElementById("pracodawca-form").style.display = "none";
+                document.getElementById("pracownik-form").style.display = "block";
+            } else {
+                document.getElementById("pracodawca-form").style.display = "none";
+                document.getElementById("pracownik-form").style.display = "none";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h2>Rejestracja</h2>
+        <form method="POST">
+        {% csrf_token %}
+            {{ form.as_p }}
+          <button type="submit" name="zarejestruj">Zarejestruj</button>
+        </form>
+        {% for message in messages %}
+        {% if message.tags == 'error' %}
+
+        <div style="width: 100%; margin-bottom: 30px; color: red">
+            <a class="close" href="{% url 'RekruterApp:rejestracja' %}" data-dismiss="alert">×</a>
+                {{ message }}
+        </div>
+        {% endif%}
+        {% endfor %}
+    <h2 style="margin-top: 30px;">Uzupełnij profil</h2>
+    <form method="post">
+        {% csrf_token %}
+        <select id="wybor" name="wybor" onchange="showForm(this)" style="max-width: 400px">
+            <option value="">Wybierz</option>
+            <option value="pracodawca" name="pracodawca">Pracodawca</option>
+            <option value="pracownik" name="pracownik">Pracownik</option>
+        </select>
+
+        <div id="pracodawca-form" style="display: none;">
+            {{ pracodawca.as_p}}
+            <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
+        </div>
+
+        <div id="pracownik-form" style="display: none;">
+            {{ pracownik.as_p }}
+            <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
+        </div>
+
+
+    </form>
+</body>
+</html>
+{% endblock content %}

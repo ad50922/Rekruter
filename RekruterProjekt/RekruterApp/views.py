@@ -1,42 +1,52 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render
+from django.db import connection
 from django.contrib import messages
 from .forms import OfertaPracyForm, UzytkownikForm, PracodawcaForm, PracownikForm
 
 def index(request):
     return render(request, "RekruterApp/index.html")
 
+
 def rejestracja(request):
     form = UzytkownikForm()
-    if request.method == 'POST':
+    pracodawca_form = PracodawcaForm()
+    pracownik_form = PracownikForm()
 
+    context = {
+        'pracownik': pracownik_form,
+        'pracodawca': pracodawca_form,
+        'form': form
+    }
+
+    if request.method == 'POST':
         if 'zarejestruj' in request.POST:
             form = UzytkownikForm(request.POST)
-            #form.save()
-            wybor = request.POST.get('wybor')
+            email = request.POST.get("email")
+            if form.is_valid():
+                with connection.cursor() as cursor:
+                    query = "SELECT COUNT(*) FROM Uzytkownik WHERE Email = %s"
+                    cursor.execute(query, [email])
+                    result = cursor.fetchone()[0]
+                    if result > 0:
+                        messages.error(request, 'Dany email jest już w bazie danych, wprowadź inny.')
+                    else:
+                        #form.save()
+                        print("Zapisano")
+
+        if 'wyslij' in request.POST:
+            wybor = request.POST.get("wybor")
             if wybor == "pracodawca":
-                return pracodawca(request)
-            else:
-                return pracownik(request)
-            #return login(request)
-        # else:
-        #     messages.error(request, 'Dany email jest już w bazie danych, wprowadź inny.')
-    return render(request, "RekruterApp/rejestracja.html", {"form": form})
+                pracodawca_form = PracodawcaForm(request.POST)
+                if pracodawca_form.is_valid():
+                    pracodawca_form.save()
+                    return oferty(request)
+            elif wybor == "pracownik":
+                pracownik_form = PracownikForm(request.POST)
+                if pracownik_form.is_valid():
+                    #pracownik_form.save()
+                    return oferty(request)
 
-
-def pracodawca(request):
-    form = PracodawcaForm()
-
-    return render(request, "RekruterApp/pracodawca.html", {"pracodawca": form})
-
-
-def pracownik(request):
-    form = PracownikForm()
-    print(request.POST)
-    if request.method == 'POST':
-        if 'uzupelnij' in request.POST:
-            # form.save()
-            return oferty(request)
-    return render(request, "RekruterApp/pracownik.html", {"pracownik": form})
+    return render(request, "RekruterApp/profil.html", context)
 
 def login(request):
     if request.method == 'POST':
@@ -64,7 +74,7 @@ def oferty(request):
     ]
 
     context = {
-        'jobs': jobs
+        'jobs': jobs,
     }
 
     return render(request, 'RekruterApp/oferty.html', context)

@@ -1,4 +1,5 @@
 from django import forms
+from django.core.exceptions import ValidationError
 from .models import (
     Administrator,
     Aplikacja,
@@ -122,7 +123,9 @@ class UzytkownikForm(forms.ModelForm):
         model = Uzytkownik
         exclude = ['id', 'stanuzytkownikaid']
         widgets = {
-            'haslo': forms.PasswordInput()
+            'nazwauzytkownika': forms.TextInput(attrs={'required': True}),
+            'email': forms.TextInput(attrs={'required': True}),
+            'haslo': forms.PasswordInput(attrs={'required': True})
         }
 
 
