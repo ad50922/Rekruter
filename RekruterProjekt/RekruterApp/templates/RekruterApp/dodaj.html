@@ -32,7 +32,9 @@
   </script>
 </head>
 <body>
+<header>
   <h2>Dodaj ofertę pracy</h2>
+</header>
   <form method="POST">
     {% csrf_token %}
     {{ form.as_p }}
@@ -56,6 +58,14 @@
 
     <button type="submit" name="dodaj">Dodaj ofertę</button>
   </form>
+{% for message in messages %}
+        {% if message.tags == 'success' %}
+        <div style="width: 100%; margin-bottom: 30px; color: green">
+            <a class="close" href="{% url 'RekruterApp:rejestracja' %}" data-dismiss="success">×</a>
+            {{ message }}
+        </div>
+        {% endif%}
+{% endfor %}
 </body>
 </html>
 {% endblock content %}

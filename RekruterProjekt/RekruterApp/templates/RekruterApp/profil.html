@@ -1,75 +1,45 @@
 {% extends "base.html" %}
+
 {% block content %}
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <script>
-        function showForm(select) {
-            var selectedOption = select.value;
-
-            if (selectedOption === "pracodawca") {
-                document.getElementById("pracownik-form").style.display = "none";
-                document.getElementById("pracodawca-form").style.display = "block";
-            } else if (selectedOption === "pracownik") {
-                document.getElementById("pracodawca-form").style.display = "none";
-                document.getElementById("pracownik-form").style.display = "block";
-            } else {
-                document.getElementById("pracodawca-form").style.display = "none";
-                document.getElementById("pracownik-form").style.display = "none";
-            }
-        }
-
-    function showProfileSection(event) {
-        event.preventDefault(); // Powstrzymaj domyślne zachowanie przycisku
-
-        var registrationForm = document.getElementById("registration-form");
-        var profileSection = document.getElementById("profile-section");
-        registrationForm.style.display = "none";
-        profileSection.style.display = "block";
-    }
-
-    </script>
+  <title>Strona logowania</title>
 </head>
 <body>
+  <main>
     <h2>Rejestracja</h2>
-    <form id="registration-form" method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" name="zarejestruj" onclick="showProfileSection(event)">Zarejestruj</button>
+    <form method="POST">
+      {% csrf_token %}
+      {{ uzytkownik.as_p }}
+      <select id="wybor" name="wybor" style="margin-bottom: 20px; max-width: 300px;">
+        <option value="pracodawca">Pracodawca</option>
+        <option value="pracownik">Pracownik</option>
+      </select>
+      <button type="submit" name="zarejestruj">Zarejestruj</button>
     </form>
 
+    {% if request.method == "POST" and request.POST.wybor == "pracodawca" %}
+    <h3>Formularz dla pracodawcy</h3>
+      {{ pracodawca.as_p }}
+    <button type="submit" name="uzupelnij">Uzupełnij profil</button>
+    {% endif %}
+
+    {% if request.method == "POST" and request.POST.wybor == "pracownik" %}
+    <h3>Formularz dla pracownika</h3>
+      {{ pracownik.as_p }}
+     <button type="submit" name="uzupelnij">Uzupełnij profil</button>
+    {% endif %}
+
     {% for message in messages %}
-        {% if message.tags == 'error' %}
+      {% if message.tags == 'error' %}
         <div style="width: 100%; margin-bottom: 30px; color: red">
-            <a class="close" href="{% url 'RekruterApp:rejestracja' %}" data-dismiss="alert">×</a>
-            {{ message }}
+          <a class="close" href="{% url 'RekruterApp:rejestracja' %}" data-dismiss="alert">×</a>
+          {{ message }}
         </div>
-        {% endif%}
+      {% endif %}
     {% endfor %}
-
-    <div id="profile-section" style="display: none;">
-        <h2 style="margin-top: 30px;">Uzupełnij profil</h2>
-        <form method="post">
-            {% csrf_token %}
-            <select id="wybor" name="wybor" onchange="showForm(this)" style="max-width: 400px">
-                <option value="">Wybierz</option>
-                <option value="pracodawca" name="pracodawca">Pracodawca</option>
-                <option value="pracownik" name="pracownik">Pracownik</option>
-            </select>
-
-            <div id="pracodawca-form" style="display: none;">
-                {{ pracodawca.as_p}}
-                <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
-            </div>
-
-            <div id="pracownik-form" style="display: none;">
-                {{ pracownik.as_p }}
-                <button type="submit" style="margin-top: 20px" name="wyslij">Wyślij</button>
-            </div>
-        </form>
-    </div>
+  </main>
 </body>
 </html>
 {% endblock content %}

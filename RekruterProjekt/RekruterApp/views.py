@@ -12,11 +12,6 @@ def rejestracja(request):
     pracodawca_form = PracodawcaForm()
     pracownik_form = PracownikForm()
 
-    context = {
-        'pracownik': pracownik_form,
-        'pracodawca': pracodawca_form,
-        'form': form
-    }
 
     if request.method == 'POST':
         if 'zarejestruj' in request.POST:
@@ -46,20 +41,18 @@ def rejestracja(request):
                     #pracownik_form.save()
                     return oferty(request)
 
-    return render(request, "RekruterApp/profil.html", context)
-
+    return render(request, "RekruterApp/profil.html", {"uzytkownik": form, "pracownik": pracownik_form,
+                                                       "pracodawca": pracodawca_form})
 
 def oferty(request):
-    #kwerenda na wyswietlenie pierwszy 10 ofert
-    jobs = [
-        {'title': 'Oferta pracy 1', 'description': 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.'},
-        {'title': 'Oferta pracy 2', 'description': 'Sed at justo sit amet elit bibendum tincidunt.'},
-        {'title': 'Oferta pracy 3', 'description': 'Vestibulum eleifend nibh in mauris bibendum.'},
-        {"qweqweqwe": "asdqweqwe"},
-    ]
+    with connection.cursor() as cursor:
+        query = "SELECT TytulOferty, SUBSTRING_INDEX(OpisOferty, ' ', 15)" \
+                " AS 'Krótki opis' FROM ofertapracy"
+        cursor.execute(query)
+        result = cursor.fetchall()
 
     context = {
-        'jobs': jobs,
+        'jobs': result,
     }
 
     return render(request, 'RekruterApp/oferty.html', context)

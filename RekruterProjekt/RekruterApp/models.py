@@ -177,7 +177,7 @@ class Typtestu(models.Model):
 
 class Uzytkownik(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    stanuzytkownikaid = models.ForeignKey(Stanuzytkownika, models.DO_NOTHING, db_column='StanUzytkownikaID', default=1)  # Field name made lowercase.
+    stanuzytkownikaid = models.ForeignKey(Stanuzytkownika, models.DO_NOTHING, db_column='StanUzytkownikaID')  # Field name made lowercase.
     nazwauzytkownika = models.CharField(db_column='NazwaUzytkownika', max_length=255, blank=True, null=True)  # Field name made lowercase.
     haslo = models.CharField(db_column='Haslo', max_length=255, blank=True, null=True)  # Field name made lowercase.
     email = models.CharField(db_column='Email', unique=True, max_length=255, blank=True, null=True)  # Field name made lowercase.
