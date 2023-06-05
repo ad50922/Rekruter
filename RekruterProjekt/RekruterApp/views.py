@@ -2,6 +2,7 @@ from django.shortcuts import render
 from django.db import connection
 from django.contrib import messages
 from .forms import OfertaPracyForm, UzytkownikForm, PracodawcaForm, PracownikForm
+from .models import Stanuzytkownika, Pracodawca, Pracownik
 
 def index(request):
     return render(request, "RekruterApp/index.html")
@@ -12,37 +13,39 @@ def rejestracja(request):
     pracodawca_form = PracodawcaForm()
     pracownik_form = PracownikForm()
 
-
     if request.method == 'POST':
         if 'zarejestruj' in request.POST:
             form = UzytkownikForm(request.POST)
-            email = request.POST.get("email")
             if form.is_valid():
-                with connection.cursor() as cursor:
-                    query = "SELECT COUNT(*) FROM Uzytkownik WHERE Email = %s"
-                    cursor.execute(query, [email])
-                    result = cursor.fetchone()[0]
-                    if result > 0:
-                        messages.error(request, 'Dany email jest już w bazie danych, wprowadź inny.')
-                    else:
-                        #form.save()
-                        print("Zapisano")
-
-        if 'wyslij' in request.POST:
-            wybor = request.POST.get("wybor")
-            if wybor == "pracodawca":
-                pracodawca_form = PracodawcaForm(request.POST)
-                if pracodawca_form.is_valid():
-                    #pracodawca_form.save()
+                stan_uzytkownika = Stanuzytkownika.objects.create()
+                uzytkownik = form.save(commit=False)
+                uzytkownik.stanuzytkownikaid = stan_uzytkownika
+                uzytkownik.save()
+                wybor = request.POST.get("wybor")
+                if wybor == "pracodawca":
+                    pracodawca = Pracodawca.objects.create(
+                        uzytkownikid=uzytkownik,
+                        nazwafirmy=request.POST.get("nazwafirmy"),
+                        glownasiedziba=request.POST.get("glownasiedziba"),
+                        numerkontaktowy=request.POST.get("numerkontaktowy"),
+                        branża=request.POST.get("branza")
+                    )
                     return oferty(request)
-            elif wybor == "pracownik":
-                pracownik_form = PracownikForm(request.POST)
-                if pracownik_form.is_valid():
-                    #pracownik_form.save()
+
+                elif wybor == "pracownik":
+                    print("JESTEM TUTAJJJJJJJJ")
+                    pracownik = Pracownik.objects.create(
+                        uzytkownikid=uzytkownik,
+                        listmotywacyjny=request.POST.get("listmotywacyjny"),
+                        cv=request.POST.get("cv")
+                    )
                     return oferty(request)
 
     return render(request, "RekruterApp/profil.html", {"uzytkownik": form, "pracownik": pracownik_form,
                                                        "pracodawca": pracodawca_form})
+
+
+
 
 def oferty(request):
     with connection.cursor() as cursor:

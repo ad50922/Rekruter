@@ -83,7 +83,7 @@ WSGI_APPLICATION = 'RekruterProjekt.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'rekruter',
+        'NAME': 'rekruter2',
         'USER': 'root',
         'PASSWORD': '#Aspirante12317',
         'HOST': 'localhost',
