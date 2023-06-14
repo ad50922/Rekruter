@@ -32,7 +32,7 @@
   </script>
 </head>
 <body>
-<header>
+<header style="margin-top: 20px">
   <h1>Dodaj ofertę pracy</h1>
 </header>
   <form method="POST">
@@ -40,7 +40,7 @@
     {{ form.as_p }}
 
     <label>
-      <input type="checkbox" id="testy-checkbox" onchange="showQuestionFields()">
+      <input name="testy" type="checkbox" id="testy-checkbox" onchange="showQuestionFields()">
       Testy
     </label>
 

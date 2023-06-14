@@ -17,17 +17,21 @@
   </style>
 </head>
 <body>
-  <header>
-    <h1>Oferty pracy</h1>
+  <header style="margin-top: 20px">
+    <h1 >Oferty pracy</h1>
   </header>
 
   <main>
+    <form method="POST">
+    {% csrf_token %}
     {% for job in jobs %}
     <div class="job">
-      <h2>{{ job.0 }}</h2>
-      <p style="text-align: center">{{ job.1 }}</p>
+      <h2><a href="{% url 'RekruterApp:oferty_testy' job.0 %}" style="text-decoration: none; color: black;">{{ job.1 }}</a></h2>
+      <p style="text-align: center">{{ job.2 }}</p>
     </div>
+
     {% endfor %}
+    </form>
   </main>
 
 </body>

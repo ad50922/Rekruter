@@ -168,7 +168,7 @@ class Odpowiedz(models.Model):
 class Odpowiedznapytanieotwarte(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
     pytanieotwarteid = models.ForeignKey('Pytanieotwarte', models.DO_NOTHING, db_column='PytanieOtwarteID')  # Field name made lowercase.
-    aplikacjaid = models.ForeignKey(Aplikacja, models.DO_NOTHING, db_column='AplikacjaID')  # Field name made lowercase.
+    aplikacjaid = models.ForeignKey(Aplikacja, models.DO_NOTHING, db_column='AplikacjaID', default=3)  # Field name made lowercase.
     trescodpowiedzinapytanie = models.CharField(db_column='TrescOdpowiedziNaPytanie', max_length=255, blank=True, null=True)  # Field name made lowercase.
 
     class Meta:
