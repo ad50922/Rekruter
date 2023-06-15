@@ -9,29 +9,44 @@
 <header style="margin-top: 20px">
   <h1>Formularz zgłoszeniowy</h1>
 </header>
-  <form method="post">
-    {% csrf_token %}
+  <form method="POST">
+      {% csrf_token %}
+
+    {% for message in messages %}
+        {% if message.tags == 'success' %}
+        <h3 style="width: 100%; margin-top: 50px; color: green">
+            {{ message }}
+        </h3>
+        {% endif%}
+    {% endfor %}
+    <h3 style="margin-top: 30px;">Firma: {{ pracodawca.0.0 }}</h3>
+    <h3>Siedziba: {{ pracodawca.0.1 }}</h3>
     <h2 style="margin-top: 30px">{{ oferta.0.0 }}</h2>
     <h3 style="text-align: left">Opis oferty:</h3>
     {{ oferta.0.1 }}
+
+
+
+
+
     <h3 style="text-align: left">CV</h3>
     <textarea name="cv" rows="10" cols="50"></textarea>
 
     <h3 style="text-align: left">List motywacyjny</h3>
     <textarea name="motivation_letter" rows="10" cols="50"></textarea>
 
-    <button type="submit" name="test" id="rozwin" style="margin-top: 20px; max-width: 350px;">Rozwiąż test</button>
-
-    <div id="test_form" style="display: none;">
-      {{ pyt_form.as_p }}
-      {{ odp_form.as_p }}
+    {% if pytania %}
+    <h3 style="margin-top: 20px; color: blue;">Do tej oferty pracy został dołączony test kompetencji, rozwiąż go, aby wysłać aplikację.</h3>
+    {% endif %}
+    <div>
+      {% for pytanie in pytania %}
+        <h3>{{ forloop.counter }}. {{ pytanie.0 }}</h3>
+        <input type="text" name="odpowiedzi[]" placeholder="Wpisz odpowiedź" required style="width: 400px;">
+      {% endfor %}
     </div>
 
-    <script>
-      document.getElementById('rozwin').addEventListener('click', function() {
-        document.getElementById('test_form').style.display = 'block';
-      });
-    </script>
+   <button type="submit" name="wyslij" id="rozwin" style="margin-top: 20px; max-width: 350px; text-align: center; margin-left: 250px">Wyślij aplikację</button>
+  <h3 style="margin-left: 520px; margin-top: 80px">Numer kontaktowy: {{ pracodawca.0.2 }}</h3>
   </form>
 
 </body>

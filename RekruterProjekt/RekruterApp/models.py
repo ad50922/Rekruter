@@ -18,12 +18,12 @@ class Administrator(models.Model):
 
 class Aplikacja(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    pracownikuzytkownikid = models.ForeignKey('Pracownik', models.DO_NOTHING, db_column='PracownikUzytkownikID')  # Field name made lowercase.
+    pracownikuzytkownikid = models.ForeignKey('Pracownik', models.DO_NOTHING, db_column='PracownikUzytkownikID', default=2)  # Field name made lowercase.
     ofertapracyid = models.ForeignKey('Ofertapracy', models.DO_NOTHING, db_column='OfertaPracyID')  # Field name made lowercase.
-    statusaplikacjiid = models.ForeignKey('Statusaplikacji', models.DO_NOTHING, db_column='StatusAplikacjiID')  # Field name made lowercase.
+    statusaplikacjiid = models.ForeignKey('Statusaplikacji', models.DO_NOTHING, db_column='StatusAplikacjiID', default=1)  # Field name made lowercase.
     listmotywacyjny = models.CharField(db_column='ListMotywacyjny', max_length=1023, blank=True, null=True)  # Field name made lowercase.
     cv = models.TextField(db_column='CV', blank=True, null=True)  # Field name made lowercase.
-    datawyslaniaaplikacji = models.DateField(db_column='DataWyslaniaAplikacji', blank=True, null=True)  # Field name made lowercase.
+    datawyslaniaaplikacji = models.DateField(db_column='DataWyslaniaAplikacji', blank=True, null=True, auto_now=True)  # Field name made lowercase.
 
     class Meta:
         managed = False
@@ -189,7 +189,7 @@ class Odpowiedznapytaniezamkniete(models.Model):
 
 class Ofertapracy(models.Model):
     id = models.AutoField(db_column='ID', primary_key=True)  # Field name made lowercase.
-    pracodawcauzytkownikid = models.ForeignKey('Pracodawca', models.DO_NOTHING, db_column='PracodawcaUzytkownikID', default=36)  # Field name made lowercase.
+    pracodawcauzytkownikid = models.ForeignKey('Pracodawca', models.DO_NOTHING, db_column='PracodawcaUzytkownikID', default=37)  # Field name made lowercase.
     testid = models.ForeignKey('Test', models.DO_NOTHING, db_column='TestID', blank=True, null=True)  # Field name made lowercase.
     tytuloferty = models.CharField(db_column='TytulOferty', max_length=255, blank=True, null=True)  # Field name made lowercase.
     opisoferty = models.CharField(db_column='OpisOferty', max_length=2047, blank=True, null=True)  # Field name made lowercase.

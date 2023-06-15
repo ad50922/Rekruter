@@ -3,7 +3,7 @@ from django.db import connection
 from django.contrib import messages
 from .forms import OfertaPracyForm, UzytkownikForm, PracodawcaForm, PracownikForm, PytanieOtwarteForm, OdpowiedzNaPytanieOtwarteForm
 from .models import Stanuzytkownika, Pracodawca, Pracownik, Test, Typtestu,\
-    Pytanieotwarte, Odpowiedznapytanieotwarte, Ofertapracy
+    Pytanieotwarte, Odpowiedznapytanieotwarte, Ofertapracy, Aplikacja
 
 def index(request):
     return render(request, "RekruterApp/index.html")
@@ -49,7 +49,7 @@ def rejestracja(request):
 def oferty(request):
     with connection.cursor() as cursor:
         query = "SELECT id,TytulOferty, SUBSTRING_INDEX(OpisOferty, ' ', 15)" \
-                " AS 'Krótki opis' FROM ofertapracy limit 10"
+                " AS 'Krótki opis' FROM ofertapracy where id > 36"
         cursor.execute(query)
         result = cursor.fetchall()
 
@@ -63,15 +63,38 @@ def oferty_testy(request, id_oferty):
     with connection.cursor() as cursor:
         query = f"SELECT TytulOferty, OpisOferty  from OfertaPracy where id = {oferta.id}"
         cursor.execute(query)
-        result = cursor.fetchall()
-
-    odp_form = OdpowiedzNaPytanieOtwarteForm()
-    pyt_form = OdpowiedzNaPytanieOtwarteForm()
+        opis_oferty = cursor.fetchall()
+    with connection.cursor() as cursor:
+        query = f"SELECT pytanie from " \
+                f"(select pytanieotwarte.trescpytania as pytanie, " \
+                f"ofertapracy.id from pytanieotwarte join ofertapracy " \
+                f"on pytanieotwarte.testid = ofertapracy.testid " \
+                f"where ofertapracy.id = {oferta.id}) as tab;"
+        cursor.execute(query)
+        pytania = cursor.fetchall()
+    with connection.cursor() as cursor:
+        query = f"SELECT nazwafirmy, siedziba, numer, branza from" \
+                f" (select pracodawca.UzytkownikID, NazwaFirmy as nazwafirmy," \
+                f" pracodawca.GlownaSiedziba as siedziba, pracodawca.NumerKontaktowy " \
+                f"as numer, pracodawca.Branża as branza, ofertapracy.PracodawcaUzytkownikID " \
+                f"from pracodawca join ofertapracy" \
+                f" on pracodawca.UzytkownikID = ofertapracy.PracodawcaUzytkownikID " \
+                f"where ofertapracy.ID = 41) as tab;"
+        cursor.execute(query)
+        pracodawca = cursor.fetchall()
     context = {
-        'odp_form': odp_form,
-        'pyt_form': pyt_form,
-        'oferta': result
+        'oferta': opis_oferty,
+        'pytania': pytania,
+        'pracodawca': pracodawca
     }
+    if request.method == 'POST':
+        if 'wyslij' in request.POST:
+            aplikacja = Aplikacja.objects.create(
+            ofertapracyid=oferta,
+            listmotywacyjny=request.POST.get("motivation_letter"),
+            cv=request.POST.get("cv")
+            )
+            messages.success(request, "Aplikacja została wysłana do pracodawcy.")
     return render(request, 'RekruterApp/oferty_testy.html', context)
 
 
